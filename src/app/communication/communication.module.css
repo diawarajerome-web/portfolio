@@ -1,0 +1,345 @@
+.page {
+  --accent: #1d4ed8;
+  --ink: #171717;
+  --muted: #595959;
+  --line: #e2e2e2;
+  --surface: #ffffff;
+  --surface-tint: #f7f7f8;
+
+  background: var(--surface);
+  color: var(--ink);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.accroche {
+  font-size: 21px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink);
+  border-left: 3px solid var(--accent);
+  padding-left: 20px;
+  margin: 0;
+  max-width: 760px;
+}
+
+/* Onglets */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+
+.tab,
+.tabActive {
+  display: inline-block;
+  appearance: none;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 4px;
+  margin-bottom: -1px;
+  cursor: pointer;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tabActive {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Vue par entreprise */
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.filterPanel {
+  position: sticky;
+  top: 24px;
+}
+
+.filterHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.clearButton {
+  display: inline-block;
+  appearance: none;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.filterList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filterChip,
+.filterChipActive {
+  display: block;
+  appearance: none;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.filterChip:hover {
+  border-color: var(--accent);
+}
+
+.filterChipActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.companies {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  min-width: 0;
+}
+
+.companySection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.companyHeader h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.dateRange {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.poste {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.contexte {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 720px;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.projectGridSingle {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  background: var(--surface-tint);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.cardNumber {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.cardPitch {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 600;
+  background: #eef1fb;
+  color: var(--accent);
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+.tagMore {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--line);
+  color: var(--muted);
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+/* Vue Résumé CV */
+
+.cv {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cvSection {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+
+.cvHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cvHeader h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cvList {
+  list-style: none;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cvItemLink {
+  display: flex;
+  gap: 12px;
+  padding: 8px 6px;
+  border-radius: 6px;
+  align-items: baseline;
+}
+
+.cvItemLink:hover {
+  background: var(--surface-tint);
+}
+
+.cvItemTitle {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 0 0 auto;
+  min-width: 260px;
+}
+
+.cvItemPitch {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filterPanel {
+    position: static;
+  }
+
+  .filterList {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .cvItemLink {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cvItemTitle {
+    min-width: 0;
+  }
+}

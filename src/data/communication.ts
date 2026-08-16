@@ -55,6 +55,14 @@ export const COMPETENCES: Competence[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// Accroche de la partie Communication — verbatim depuis "2 - Portfolio -
+// Contenu final (source de vérité).md", section "0. Accroche / positionnement".
+// ---------------------------------------------------------------------------
+
+export const ACCROCHE_COMMUNICATION =
+  "Dix-sept ans à faire parler des institutions, des marques et des collectifs qui n'avaient pas toujours envie de se laisser raconter. J'ai fait de la communication dans des mondes qui ne se parlent pas beaucoup entre eux : une collectivité territoriale, une fédération agricole, une école qui ferme, un groupe de marques food en pleine expansion. Ce que j'en retiens : la com institutionnelle et le marketing de marque, ce n'est pas deux métiers, c'est le même réflexe appliqué à des enjeux différents, comprendre ce qu'une organisation a vraiment à dire, et trouver la forme qui fait qu'on l'écoute.";
+
+// ---------------------------------------------------------------------------
 // Entreprises — 6, ordre antichronologique (= ordre d'affichage par défaut)
 // ---------------------------------------------------------------------------
 
@@ -73,6 +81,11 @@ export interface Company {
   ongoing: boolean;
   poste: string;
   posteDates: string;
+  // Texte de liaison affiché sous le nom de l'entreprise dans la vue par défaut.
+  // Verbatim depuis "4 - Communication - Draft narratif (textes de liaison).md",
+  // paragraphe "Contexte (texte de liaison)" de chaque entreprise (décision actée :
+  // le draft narratif devient le texte de liaison, il ne part pas à la poubelle).
+  contexte: string;
 }
 
 export const COMPANIES: Company[] = [
@@ -83,6 +96,8 @@ export const COMPANIES: Company[] = [
     ongoing: true,
     poste: "Chef de Projet Événementiel (CDD)",
     posteDates: "juillet 2025 à janvier 2027 — mission en cours",
+    contexte:
+      "Légumes de France, la fédération nationale des producteurs de légumes frais (créée en 1946, 32 000 exploitations, 200 000 emplois), célèbre ses 80 ans en 2026 à travers son congrès national : un événement de 400 personnes, sur le site du marché de Rungis, l'un des plus grands marchés de produits frais au monde, avec un budget de 238 K€. Je reprends cette mission après le départ progressif de la personne qui la portait depuis plusieurs années, devenue entre-temps maire de sa commune.",
   },
   {
     slug: "lea-cfi",
@@ -91,6 +106,8 @@ export const COMPANIES: Company[] = [
     ongoing: false,
     poste: "Responsable Communication et Marketing, membre du COMEX",
     posteDates: "2024-2025",
+    contexte:
+      "LEA-CFI, école de la CCI Île-de-France (40 parcours diplômants, 1 700 apprenants, 130 collaborateurs, 3 campus), traversait déjà un risque de fermeture au moment où je suis arrivé. Plusieurs personnes ont été recrutées à cette période dans le cadre d'un plan de redressement global, chacune sur sa propre mission. La mienne, en tant que Responsable Communication et Marketing : retravailler l'identité de l'école, refondre son catalogue, produire des visuels et des contenus qui donnent envie de la choisir plutôt qu'une autre.",
   },
   {
     slug: "les-bonnes-choses",
@@ -99,6 +116,8 @@ export const COMPANIES: Company[] = [
     ongoing: false,
     poste: "Responsable Marketing et E-commerce / Brand Manager",
     posteDates: "2022-2024",
+    contexte:
+      "Les Bonnes Choses est un petit groupe multimarques français (food et bien-être : Gourmiz', Luddigekki, Essenciagua, La Sablésienne, 7 M€ de CA), construit autour d'une stratégie D2C et omnicanale. J'y suis arrivé après une formation e-commerce et vente sur Amazon, avec l'objectif de développer une nouvelle corde à mon arc après plusieurs années dans la communication institutionnelle pure.",
   },
   {
     slug: "anem",
@@ -107,6 +126,8 @@ export const COMPANIES: Company[] = [
     ongoing: false,
     poste: "Responsable Communication et des Partenariats",
     posteDates: "2019-2022",
+    contexte:
+      "L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 5 000 élus des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir.",
   },
   {
     slug: "yvelines",
@@ -115,6 +136,8 @@ export const COMPANIES: Company[] = [
     ongoing: false,
     poste: "Chef de Projet Communication",
     posteDates: "2013-2019",
+    contexte:
+      "Six ans au cabinet du Président du Département des Yvelines (1,4 M d'habitants, budget annuel de 1,5 Md€), en tant que référent communication pour plusieurs directions à la fois (Environnement, Tourisme, Mobilités, Finances, Enfance & Solidarités). C'est l'expérience la plus longue et la plus large de mon parcours.",
   },
   {
     slug: "lipton-fit",
@@ -123,6 +146,8 @@ export const COMPANIES: Company[] = [
     ongoing: false,
     poste: "Chargé de Communication",
     posteDates: "2009-2013, et ponctuellement depuis",
+    contexte:
+      "Mon premier poste, dans un cabinet de conseil en banque, assurance et finance d'une soixantaine de consultants, majoritairement de la communication interne, avec une part d'externe, et souvent en autonomie complète (ma responsable a été deux fois en congé maternité pendant ces quatre ans).",
   },
 ];
 
@@ -608,6 +633,10 @@ export function getCompany(slug: CompanySlug): Company {
 
 export function getProjectsByCompany(slug: CompanySlug): ProjectCard[] {
   return PROJECTS.filter((p) => p.company === slug).sort((a, b) => a.number - b.number);
+}
+
+export function getProjectBySlug(slug: string): ProjectCard | undefined {
+  return PROJECTS.find((p) => p.slug === slug);
 }
 
 export function getProjectsByCompetence(slug: CompetenceSlug): ProjectCard[] {

@@ -1,0 +1,119 @@
+.page {
+  --accent: #1d4ed8;
+  --ink: #171717;
+  --muted: #595959;
+  --line: #e2e2e2;
+  --surface-tint: #f7f7f8;
+
+  color: var(--ink);
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+.back {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.company {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.pitch {
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 32px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  background: #eef1fb;
+  color: var(--accent);
+  border-radius: 4px;
+  padding: 4px 9px;
+}
+
+.corps {
+  font-size: 15.5px;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.corps ul {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.placeholder {
+  margin-top: 32px;
+  padding: 14px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--surface-tint);
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.pieces {
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+
+.pieces h2 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.pieces ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pieces li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13.5px;
+}
+
+.pieceTitre {
+  font-weight: 600;
+}
+
+.pieceStatut {
+  color: var(--muted);
+  font-size: 12.5px;
+}
