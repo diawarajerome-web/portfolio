@@ -46,9 +46,7 @@ export default async function FichePage({ params }: { params: Promise<FicheParam
       <p className={styles.company}>
         {company.name} — {company.poste}
       </p>
-      <h1 className={styles.title}>
-        {project.number}. {project.title}
-      </h1>
+      <h1 className={styles.title}>{project.title}</h1>
       <p className={styles.pitch}>{project.pitch}</p>
 
       <div className={styles.tags}>

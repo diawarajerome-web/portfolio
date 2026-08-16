@@ -92,10 +92,13 @@ export const COMPANIES: Company[] = [
   {
     slug: "legumes-de-france",
     name: "Légumes de France",
-    dateRange: "2025-2027",
+    // Correction du 16/08/2026 (lot 5) : Jérôme a signalé que le poste a démarré
+    // en juillet 2026, pas juillet 2025 (erreur de saisie initiale). Corrigé ici
+    // et dans le document de contenu source avec son accord direct.
+    dateRange: "2026-2027",
     ongoing: true,
     poste: "Chef de Projet Événementiel (CDD)",
-    posteDates: "juillet 2025 à janvier 2027 — mission en cours",
+    posteDates: "juillet 2026 à janvier 2027 — mission en cours",
     contexte:
       "Légumes de France, la fédération nationale des producteurs de légumes frais (créée en 1946, 32 000 exploitations, 200 000 emplois), célèbre ses 80 ans en 2026 à travers son congrès national : un événement de 400 personnes, sur le site du marché de Rungis, l'un des plus grands marchés de produits frais au monde, avec un budget de 238 K€. Je reprends cette mission après le départ progressif de la personne qui la portait depuis plusieurs années, devenue entre-temps maire de sa commune.",
   },

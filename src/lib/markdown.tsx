@@ -1,17 +1,21 @@
 import { Fragment, type ReactNode } from "react";
 
 /**
- * Rendu minimal du markdown utilisé dans les champs `corps` de src/data/communication.ts
- * (gras **, italique *, listes à puces "- "). Pas de dépendance externe : le texte
+ * Rendu minimal du markdown utilisé dans les champs de contenu verbatim
+ * (src/data/communication.ts, creativite.ts, produit.ts) : gras **, italique *,
+ * code `en ligne`, listes à puces "- ". Pas de dépendance externe : le texte
  * source est entièrement maîtrisé (verbatim depuis le document de contenu final),
- * pas besoin d'un vrai parseur markdown pour couvrir ces trois cas.
+ * pas besoin d'un vrai parseur markdown pour couvrir ces cas.
  */
 
 function renderInline(text: string): ReactNode {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).filter(Boolean);
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g).filter(Boolean);
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return <code key={i}>{part.slice(1, -1)}</code>;
     }
     if (part.startsWith("*") && part.endsWith("*")) {
       return <em key={i}>{part.slice(1, -1)}</em>;

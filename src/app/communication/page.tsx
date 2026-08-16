@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   COMPANIES,
   COMPETENCES,
+  PROJECTS,
   ACCROCHE_COMMUNICATION,
   getProjectsByCompany,
   type CompetenceSlug,
@@ -24,11 +25,14 @@ import styles from "./communication.module.css";
 // Design neutre (gris + un accent bleu) : pas encore de direction artistique
 // validée pour le site, ce sera repris quand la partie visuelle sera tranchée.
 
-export const metadata = {
-  title: "Communication — Jérôme Le Rhun",
-  description:
-    "17 ans d'expérience en communication et marketing, 18 projets classés par entreprise ou par compétence.",
-};
+// Nombre de fiches lu depuis PROJECTS.length (pas de compte en dur) : reste juste
+// si le nombre de fiches change au fil des redécoupages de contenu.
+export function generateMetadata() {
+  return {
+    title: "Communication — Jérôme Le Rhun",
+    description: `17 ans d'expérience en communication et marketing, ${PROJECTS.length} projets classés par entreprise ou par compétence.`,
+  };
+}
 
 type SearchParams = { vue?: string; competences?: string };
 
@@ -167,7 +171,6 @@ function ProjectCardTile({ project }: { project: ProjectCardType }) {
 
   return (
     <Link href={`/communication/${project.slug}`} className={styles.card}>
-      <p className={styles.cardNumber}>{project.number}</p>
       <h3 className={styles.cardTitle}>{project.title}</h3>
       <p className={styles.cardPitch}>{project.pitch}</p>
       <div className={styles.cardTags}>
