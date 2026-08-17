@@ -111,6 +111,16 @@
 
 .pieceTitre {
   font-weight: 600;
+  color: inherit;
+}
+
+a.pieceTitre {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a.pieceTitre:hover {
+  text-decoration: underline;
 }
 
 .pieceStatut {

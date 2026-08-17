@@ -6,14 +6,16 @@ import {
   getProjectBySlug,
   getCompany,
   getPiecesForProject,
+  pieceStatusLabel,
 } from "@/data/communication";
 import { renderCorps } from "@/lib/markdown";
 import styles from "./fiche.module.css";
 
 // Fiche projet complète — lot 5. Ouverte depuis une carte ou un tag "+N" de
 // /communication. Liste toutes les compétences (pas seulement les 3 affichées
-// sur la carte) et les pièces écrites rattachées (liens vers leur page à venir
-// au lot 7 — pour l'instant, juste le titre et le statut).
+// sur la carte) et les pièces écrites rattachées : titre cliquable vers
+// /pieces/[id] quand le texte intégral est disponible (lot 7), sinon statut
+// affiché (sélection en cours / à vérifier / texte introuvable).
 
 type FicheParams = { slug: string };
 
@@ -69,12 +71,14 @@ export default async function FichePage({ params }: { params: Promise<FicheParam
           <ul>
             {pieces.map((piece) => (
               <li key={piece.id}>
-                <span className={styles.pieceTitre}>{piece.titre}</span>
-                <span className={styles.pieceStatut}>
-                  {piece.statut === "confirme"
-                    ? "texte disponible — page à venir (lot 7)"
-                    : "sélection en cours"}
-                </span>
+                {piece.texteDisponibleDansLeRepo ? (
+                  <Link href={`/pieces/${piece.id}`} className={styles.pieceTitre}>
+                    {piece.titre}
+                  </Link>
+                ) : (
+                  <span className={styles.pieceTitre}>{piece.titre}</span>
+                )}
+                <span className={styles.pieceStatut}>{pieceStatusLabel(piece)}</span>
               </li>
             ))}
           </ul>

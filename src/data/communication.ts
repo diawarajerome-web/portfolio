@@ -174,6 +174,13 @@ export interface PieceEcrite {
   attribution?: string; // note d'attribution spéciale à afficher sur la page (cas Enedis)
   rattachements: number[]; // numéros de fiches projets
   texteDisponibleDansLeRepo: boolean; // true = déjà transcrit dans le doc "Pièces écrites confirmées"
+  // Texte intégral verbatim (lot 7), présent uniquement quand texteDisponibleDansLeRepo
+  // est true. Source : "5 - Communication - Pièces écrites confirmées (textes
+  // intégraux)". Markdown minimal (gras, listes), rendu via renderCorps.
+  texteIntegral?: string;
+  // Lien vers le document d'origine quand il est encore en ligne (référence, pas un
+  // téléchargement proposé au visiteur — cf. décision "HTML, pas de PDF").
+  sourceUrl?: string;
 }
 
 export const PIECES_ECRITES: PieceEcrite[] = [
@@ -187,6 +194,31 @@ export const PIECES_ECRITES: PieceEcrite[] = [
     statut: "confirme",
     rattachements: [4],
     texteDisponibleDansLeRepo: true,
+    texteIntegral: `**COMMUNIQUE DE PRESSE DU 07/02/2025**
+
+**Hackathon énergie : Créons ensemble les solutions formation innovantes pour le recrutement de vos futurs collaborateurs**
+
+LEA-CFI organise un Hackathon sur le thème du recrutement le 13 février 2025, de 8h30 à 13h30 sur son campus de Gambetta. L'objectif est de coconstruire avec ses partenaires des solutions innovantes pour la formation et l'intégration de futurs collaborateurs.
+
+Cet événement vise à relever les défis de recrutement des entreprises en élaborant conjointement des solutions novatrices pour la formation et l'intégration des talents de demain. Sous le thème principal « Créons ensemble les solutions formation innovantes pour le recrutement de vos futurs collaborateurs », les discussions porteront sur les questions suivantes : Quel public cibler ? Quels dispositifs de financement mobiliser ? Quelle pédagogie adopter ? Quel accompagnement proposer aux apprenants et aux entreprises ?
+
+Les participants auront l'opportunité de participer à des ateliers de réflexion collaborative, visiter les plateaux techniques pour découvrir les infrastructures de pointe du campus, échanger avec les apprenants sur leur expérience et leurs projets, partager un moment convivial autour d'un déjeuner.
+
+Les discussions seront animées par des membres de la direction et de l'équipe enseignante de LEA-CFI : Caroline FORTIER, Directrice Générale de LEA-CFI, Anne BITEAU, Directrice des programmes académiques Raphaël FAUCQUEMBERGUE, Responsable du Département Développement Grands Comptes Entreprises, Brigitte COUMANNE, Responsable Grands Comptes, Jaime ROCHA et Frédéric CLABAUX.
+
+De nombreux partenaires de LEA-CFI ont confirmé leur participation, parmi lesquels : MITSUBISHI ELECTRIC, REOLIAN, SYNERGIE ROUGNON, ATLANTIC, VINCI ENERGIE, RANDSTAD, IDEX, SE3M, CARRIER, SPIE FACILITIES et CONSTRUCTYS. Leur présence témoigne de leur engagement à accompagner les évolutions des métiers et de la formation.
+
+Nous comptons sur votre participation pour coconstruire des solutions adaptées aux enjeux actuels et anticiper les besoins futurs de votre secteur. Ensemble, faisons avancer la formation et le recrutement vers un avenir durable et performant.
+
+**Informations pratiques :**
+
+- Date : Jeudi 13 février 2025
+- Horaires : 8h30 à 13h30
+- Lieu : Campus de Gambetta, LEA-CFI
+
+**À propos de LÉA-CFI :** LÉA-CFI, école de la Chambre de Commerce et d'Industrie Paris Île-de-France, accueille chaque année près de 1 400 apprenants sur 3 campus spécialisés. À Paris, l'école forme aux métiers de la performance des bâtiments et de l'efficacité énergétique. À Orly, les formations se concentrent sur le froid industriel et commercial, les mobilités et la maintenance des véhicules. À Jouy-en-Josas, l'école propose des cursus en travaux publics en valorisation des espaces naturels, paysagers et sportifs et en gestion d'affaires dans l'agrobusiness et le paysage. La mission de LEA-CFI : accompagner les talents et les experts de demain tout au long de leur parcours, afin qu'ils soient prêts à relever les défis de la transition écologique et industrielle. L'école s'engage à soutenir le développement responsable des entreprises et des territoires en formant des professionnels qualifiés, innovants et conscients des enjeux environnementaux et sociétaux. Chaque année, plus de 500 élèves sont diplômés.
+
+Contact Presse | Jérôme Le Rhun Diawara | Jlerhun@lea-cfi.fr`,
   },
   {
     id: "lea-cfi-titre-professionnel-electricien",
@@ -198,6 +230,17 @@ export const PIECES_ECRITES: PieceEcrite[] = [
     statut: "confirme",
     rattachements: [4],
     texteDisponibleDansLeRepo: true,
+    texteIntegral: `Ce lundi 25 novembre, nous avons eu le plaisir d'accueillir le premier groupe d'électriciens d'équipement du bâtiment sur notre campus de Paris.
+
+Grâce à un appel d'offre remporté dans le cadre du programme SPOTT EEB, et au financement de l'OPCO AKTO, cette formation qualifiante de 525 heures permettra de valider le titre professionnel d'électricien d'équipement du bâtiment.
+
+Ce projet ambitieux regroupe des intérimaires issus de 4 grands réseaux de travail temporaire : Adecco, Groupe Actual, Randstad, Synergie.
+
+Nous souhaitons bienvenue à Samantha, José, Nazim, Mohammed, Sylla, Mouhamed, Kenneth, Milaï et Hamath !
+
+Un grand merci à nos partenaires qui rendent cette initiative possible : Joëlle MAGNE (AKTO), Catherine SCHLOSSER et Fabrice MAZOYER (RANDSTAD), Pascale JAQUAND (ACTUAL/ERGOS), Hong VO BA et Milène SOARES (SYNERGIE), Pierre-Laurent JOUBERTON (SYNERGIE INSERTION), Sophie CHAROY (ADECCO).
+
+Merci également à nos équipes : Thierry Langevin, Huseyin Tanık, Cécile GEORJON et Brigitte Coumanne pour leur investissement.`,
   },
   {
     id: "lea-cfi-inventaire-59-actualites",
@@ -219,6 +262,36 @@ export const PIECES_ECRITES: PieceEcrite[] = [
       "Rédigé par Jérôme Diawara au nom du partenaire Enedis, publié sur anem.fr. À préciser explicitement sur la page pour ne pas laisser croire à un texte institutionnel de l'ANEM ou fourni tel quel par Enedis (le texte est à la première personne du pluriel côté Enedis : \"notre principale action\", \"Enedis s'est engagée\").",
     rattachements: [11],
     texteDisponibleDansLeRepo: true,
+    sourceUrl: "https://www.anem.fr/5138-2/",
+    texteIntegral: `En tant que gestionnaire du réseau public de distribution d'électricité sur 95 % du territoire national, Enedis s'est engagée auprès des collectivités territoriales, des opérateurs, des entreprises de télécommunications, de l'Autorité de régulation des communications électroniques et des postes (Arcep), ainsi que des administrations afin de contribuer activement à l'aménagement numérique du territoire.
+
+Très concrètement, notre principale action consiste, dans le cadre du plan France très haut débit (THD), à faciliter le déploiement de la fibre optique sur les poteaux électriques du réseau que nous exploitons.
+
+Cette possibilité est ouverte dès la signature par l'opérateur concerné et Enedis d'une convention, et la transmission d'études mécaniques valides.
+
+Enedis met en œuvre plusieurs engagements forts dans chacun des départements français afin de favoriser le déploiement du THD et le déploiement de la fibre dans les délais :
+
+Enedis a simplifié les études en dispensant l'opérateur des études mécaniques dans certaines configurations ou en les forfaitisant dans d'autres configurations.
+
+La cartographie du réseau électrique est désormais fournie aux opérateurs en une seule fois pour l'ensemble du territoire couvert par la convention.
+
+Enedis accompagne les opérateurs et leurs bureaux d'études sur le plan de la technique et de la maîtrise des spécificités des appuis communs. À ce jour, plus de 30 sessions de formation ont été organisées.
+
+Enedis prépare la montée en puissance des déploiements en permettant dans certaines conditions de passer d'un contrôle a priori des études à un contrôle a posteriori.
+
+Enedis a contribué au travail mené par la Direction générale de l'énergie et du climat (DGEC) pour réviser l'arrêté technique de 2001 qui fixe les règles de tenue mécanique des ouvrages électriques. Avec la mise en place d'un nouvel outil informatique de suivi partagé de l'utilisation des Appuis communs, l'écosystème du THD peut mesurer en temps réel l'efficacité des déploiements et de notre action.
+
+L'ensemble de ces travaux a conduit à une simplification des règles et des processus qui permet d'accélérer le déploiement du THD en France. À chaque étape, les équipes d'Enedis dédiées au THD sur l'ensemble du territoire national accompagnent localement les porteurs de projets.
+
+En complément, pour les réseaux souterrains, Enedis a développé une offre de mutualisation du génie civil, principalement des tranchées. Moyennant une participation financière, Enedis pose des fourreaux télécoms dans les tranchées ouvertes lors de ses travaux.
+
+Un pilotage national est assuré afin de prioriser et d'homogénéiser l'action d'Enedis sur l'ensemble du territoire, en lien avec les directions régionales d'Enedis. Cette organisation permet de répondre à l'enjeu d'accélération et d'industrialisation du projet, aux sollicitations croissantes des opérateurs et au partage des meilleures pratiques observées sur le territoire, avec la volonté permanente d'être au plus proche de ceux qui font avancer le plan France THD dans les territoires.
+
+Enfin, notre implication dans le THD porte également sur la sensibilisation des acteurs autour du risque électrique. La sécurité des opérateurs et des intervenants sur nos ouvrages ou à proximité est une priorité absolue d'Enedis. S'agissant du THD, les maîtres d'ouvrage jouent un rôle essentiel, notamment par le contrôle qu'ils peuvent exercer auprès de leurs sous-traitants.
+
+En lien avec les professionnels du secteur, Enedis est en recherche continue de simplifications supplémentaires. Enedis est à l'écoute de nouvelles propositions si elles garantissent les exigences fortes de sécurité pour les interventions, la tenue mécanique des ouvrages électriques et la couverture de ses coûts, conformément aux exigences du régulateur.
+
+Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le déploiement du THD sur 100 % du territoire, au bénéfice de nos concitoyens et de tous les territoires.`,
   },
   {
     id: "anem-pour-la-montagne-articles",
@@ -648,6 +721,37 @@ export function getProjectsByCompetence(slug: CompetenceSlug): ProjectCard[] {
 
 export function getPiecesForProject(project: ProjectCard): PieceEcrite[] {
   return PIECES_ECRITES.filter((p) => project.pieceEcriteIds.includes(p.id));
+}
+
+export function getPieceById(id: string): PieceEcrite | undefined {
+  return PIECES_ECRITES.find((p) => p.id === id);
+}
+
+// Sens inverse de ProjectCard.pieceEcriteIds — une pièce peut être rattachée à
+// plusieurs fiches (cas des inventaires ANEM/LEA-CFI une fois répartis). Calculé
+// depuis pieceEcriteIds (la relation réellement utilisée par l'affichage), pas
+// depuis PieceEcrite.rattachements (conservé à titre documentaire, non consommé
+// par le rendu — voir commentaire sur l'interface).
+export function getProjectsForPiece(pieceId: string): ProjectCard[] {
+  return PROJECTS.filter((p) => p.pieceEcriteIds.includes(pieceId)).sort((a, b) => a.number - b.number);
+}
+
+// Libellé affiché en regard d'une pièce écrite dans la liste "Pièces écrites
+// liées" d'une fiche projet. Distingue les 4 statuts (voir PieceStatut) et le
+// cas confirmé-mais-pas-encore-transcrit (ex. articles Pour La Montagne : statut
+// confirmé côté contenu, texte pas encore recopié dans le repo).
+export function pieceStatusLabel(piece: PieceEcrite): string {
+  if (piece.texteDisponibleDansLeRepo) return "texte disponible";
+  switch (piece.statut) {
+    case "confirme":
+      return "confirmé — pas encore mis en page";
+    case "selection-en-cours":
+      return "sélection en cours";
+    case "texte-manquant":
+      return "texte original introuvable";
+    case "a-verifier":
+      return "à vérifier";
+  }
 }
 
 // Compteurs réels de la taxonomie, calculés à partir de la ligne "Compétences :"
