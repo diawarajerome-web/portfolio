@@ -2,56 +2,87 @@
  * Modèle de données — Partie Communication.
  *
  * Source : "2 - Portfolio - Contenu final (source de vérité).md" (doc figé, ne pas
- * reformuler le texte). Ce fichier ne fait que structurer ce contenu, verbatim,
- * pour l'affichage (vue par entreprise + filtre compétence, vue résumé CV).
+ * reformuler le texte) et "6 - Communication - Base de données par projet v2 (35
+ * fiches).md" pour le détail fiche par fiche. Ce fichier ne fait que structurer ce
+ * contenu, verbatim, pour l'affichage (vue par entreprise + filtre compétence, vue
+ * résumé CV).
  *
- * Décisions de modélisation actées (lot 4, 16/08/2026) :
- * - Le "poste" est rattaché à l'entreprise, pas à chaque fiche : dans les 18 fiches,
- *   un même poste couvre toujours toutes les fiches d'une même entreprise.
+ * Décisions de modélisation actées (lot 4, 16/08/2026, inchangées au lot 4 bis) :
+ * - Le "poste" est rattaché à l'entreprise, pas à chaque fiche : un même poste
+ *   couvre toujours toutes les fiches d'une même entreprise.
  * - Le corps de chaque fiche ("Ce que j'ai fait", contexte, enjeu, anecdote, etc.)
  *   n'est PAS éclaté en sous-champs : les fiches n'ont pas une structure uniforme
  *   (certaines ont un "Contexte", une "Anecdote", d'autres non). Un champ `corps`
  *   markdown unique préserve le texte et l'ordre validés sans réinterprétation.
  * - Entité "pièce écrite" séparée, reliée aux fiches en n-à-n via `rattachements`.
  *   Statuts : confirme | selection-en-cours | texte-manquant | a-verifier
- *   (voir section 21 du document de contenu pour la définition de chaque statut).
+ *   (voir section 38 de la base de données v2 pour la définition de chaque statut).
+ *
+ * Lot 4 bis (17/08/2026) : redécoupage de 18 à 35 fiches, taxonomie de 11 à 12
+ * compétences, à l'issue d'une revue complète action par action avec Jérôme (voir
+ * "Communication - Taxonomie et structure base de données.md" côté contenu). Pas de
+ * changement de structure de données — uniquement du volume et deux slugs de
+ * compétence en plus, deux renommages/fusions. Détail des changements de slug dans
+ * le commentaire au-dessus de CompetenceSlug ci-dessous.
+ *
+ * IMPORTANT — 6 fiches pas encore relues mot à mot par Jérôme (10, 11, 16, 18, 28,
+ * 29) : texte narratif complet mais rédigé à partir de notes de session, pas encore
+ * validé verbatim. Intégrées ici à la demande de Jérôme (17/08/2026, pour avancer
+ * techniquement) — à ne pas considérer comme définitivement figées avant sa
+ * relecture. Repérables ci-dessous par le commentaire "[NOUVELLE FICHE]".
  */
 
 // ---------------------------------------------------------------------------
-// Compétences — taxonomie figée le 16/08/2026 (11 compétences)
+// Compétences — taxonomie révisée le 17/08/2026 (12 compétences, ex-11)
+//
+// Correspondance avec l'ancienne taxonomie (11, verrouillée le 16/08/2026) :
+// - "communication-strategique" + "communication-institutionnelle" FUSIONNENT
+//   en "strategie-communication-institutionnelle"
+// - "marque-employeur-communication-interne" SE SCINDE en
+//   "communication-interne-cohesion-equipe" (public interne captif) et
+//   "animation-communaute" (collectif externe volontaire) — l'angle "marque
+//   employeur" disparaît, aucune fiche ne le démontrant réellement
+// - "partenariats-sponsoring" RENOMMÉ ET ÉLARGI en "partenariats-relais"
+// - NOUVEAU : "veille-et-analyse"
+// - evenementiel, relations-presse, redactionnel-editorial, communication-de-crise,
+//   marketing-digital-acquisition, production-creative, structuration-outils :
+//   inchangés
 // ---------------------------------------------------------------------------
 
 export type CompetenceSlug =
   | "evenementiel"
   | "relations-presse"
   | "redactionnel-editorial"
-  | "communication-strategique"
-  | "communication-institutionnelle"
+  | "strategie-communication-institutionnelle"
   | "communication-de-crise"
-  | "partenariats-sponsoring"
+  | "partenariats-relais"
   | "marketing-digital-acquisition"
-  | "marque-employeur-communication-interne"
+  | "communication-interne-cohesion-equipe"
+  | "animation-communaute"
   | "production-creative"
-  | "structuration-outils";
+  | "structuration-outils"
+  | "veille-et-analyse";
 
 export interface Competence {
   slug: CompetenceSlug;
   label: string;
 }
 
-// Ordre = ordre d'affichage validé dans le wireframe v1 (filtre à gauche).
+// Ordre = ordre des 12 compétences dans le document de contenu (section
+// "Liste des 12 compétences" de la partie Communication).
 export const COMPETENCES: Competence[] = [
   { slug: "evenementiel", label: "Événementiel" },
   { slug: "relations-presse", label: "Relations presse" },
   { slug: "redactionnel-editorial", label: "Rédactionnel / éditorial" },
-  { slug: "communication-strategique", label: "Communication stratégique" },
-  { slug: "communication-institutionnelle", label: "Communication institutionnelle" },
+  { slug: "strategie-communication-institutionnelle", label: "Stratégie et communication institutionnelle" },
   { slug: "communication-de-crise", label: "Communication de crise" },
-  { slug: "partenariats-sponsoring", label: "Partenariats / sponsoring" },
-  { slug: "marketing-digital-acquisition", label: "Marketing digital / acquisition" },
-  { slug: "marque-employeur-communication-interne", label: "Marque employeur / communication interne" },
-  { slug: "production-creative", label: "Production créative (vidéo, identité visuelle)" },
-  { slug: "structuration-outils", label: "Structuration / outils" },
+  { slug: "partenariats-relais", label: "Partenariats et relais" },
+  { slug: "marketing-digital-acquisition", label: "Marketing digital et acquisition" },
+  { slug: "communication-interne-cohesion-equipe", label: "Communication interne et cohésion d'équipe" },
+  { slug: "animation-communaute", label: "Animation de communauté" },
+  { slug: "production-creative", label: "Production créative" },
+  { slug: "structuration-outils", label: "Structuration et outils" },
+  { slug: "veille-et-analyse", label: "Veille et analyse" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -64,6 +95,18 @@ export const ACCROCHE_COMMUNICATION =
 
 // ---------------------------------------------------------------------------
 // Entreprises — 6, ordre antichronologique (= ordre d'affichage par défaut)
+//
+// Inchangé au lot 4 bis : le regroupement par entreprise n'a pas bougé avec le
+// redécoupage à 35 fiches, seule leur répartition à l'intérieur de chaque
+// entreprise a changé. Textes de liaison (`contexte`) donc a priori toujours
+// valides tels quels.
+//
+// POINT À SIGNALER À JÉRÔME, PAS CORRIGÉ D'AUTORITÉ : le texte de liaison ANEM
+// ci-dessous (source : "4 - Communication - Draft narratif") dit "plus de 5 000
+// élus adhérents", alors que la fiche 17 de la base de données v2 (validée le
+// 17/08/2026) dit "plus de 6 000 élus adhérents". Les deux documents ne sont pas
+// synchronisés sur ce chiffre. Le chiffre le plus récent (6 000, doc v2) est
+// repris ci-dessous, mais cette divergence doit être confirmée par Jérôme.
 // ---------------------------------------------------------------------------
 
 export type CompanySlug =
@@ -92,9 +135,6 @@ export const COMPANIES: Company[] = [
   {
     slug: "legumes-de-france",
     name: "Légumes de France",
-    // Correction du 16/08/2026 (lot 5) : Jérôme a signalé que le poste a démarré
-    // en juillet 2026, pas juillet 2025 (erreur de saisie initiale). Corrigé ici
-    // et dans le document de contenu source avec son accord direct.
     dateRange: "2026-2027",
     ongoing: true,
     poste: "Chef de Projet Événementiel (CDD)",
@@ -130,7 +170,7 @@ export const COMPANIES: Company[] = [
     poste: "Responsable Communication et des Partenariats",
     posteDates: "2019-2022",
     contexte:
-      "L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 5 000 élus des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir.",
+      "L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 6 000 élus adhérents des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir.",
   },
   {
     slug: "yvelines",
@@ -156,6 +196,11 @@ export const COMPANIES: Company[] = [
 
 // ---------------------------------------------------------------------------
 // Pièces écrites — entité séparée, reliée aux fiches en n-à-n
+//
+// Rattachements corrigés le 17/08/2026 suite au redécoupage 18→35 fiches (voir
+// "5 - Communication - Pièces écrites confirmées (textes intégraux)" côté
+// contenu). Seule la correspondance vers les fiches change ; aucun texte n'est
+// modifié.
 // ---------------------------------------------------------------------------
 
 export type PieceStatut =
@@ -172,7 +217,7 @@ export interface PieceEcrite {
   supportOrigine: string;
   statut: PieceStatut;
   attribution?: string; // note d'attribution spéciale à afficher sur la page (cas Enedis)
-  rattachements: number[]; // numéros de fiches projets
+  rattachements: number[]; // numéros de fiches projets (v2, 1-35)
   texteDisponibleDansLeRepo: boolean; // true = déjà transcrit dans le doc "Pièces écrites confirmées"
   // Texte intégral verbatim (lot 7), présent uniquement quand texteDisponibleDansLeRepo
   // est true. Source : "5 - Communication - Pièces écrites confirmées (textes
@@ -192,7 +237,7 @@ export const PIECES_ECRITES: PieceEcrite[] = [
     commanditaire: "LEA-CFI",
     supportOrigine: "Communiqué de presse officiel LEA-CFI",
     statut: "confirme",
-    rattachements: [4],
+    rattachements: [3],
     texteDisponibleDansLeRepo: true,
     texteIntegral: `**COMMUNIQUE DE PRESSE DU 07/02/2025**
 
@@ -228,7 +273,7 @@ Contact Presse | Jérôme Le Rhun Diawara | Jlerhun@lea-cfi.fr`,
     commanditaire: "LEA-CFI",
     supportOrigine: "Actualité du site LEA-CFI (site aujourd'hui fermé)",
     statut: "confirme",
-    rattachements: [4],
+    rattachements: [3],
     texteDisponibleDansLeRepo: true,
     texteIntegral: `Ce lundi 25 novembre, nous avons eu le plaisir d'accueillir le premier groupe d'électriciens d'équipement du bâtiment sur notre campus de Paris.
 
@@ -248,7 +293,7 @@ Merci également à nos équipes : Thierry Langevin, Huseyin Tanık, Cécile GEO
     commanditaire: "LEA-CFI",
     supportOrigine: "Site LEA-CFI (fermé) — titres et dates seulement, pas de lien",
     statut: "selection-en-cours",
-    rattachements: [4],
+    rattachements: [3, 4, 10],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -260,7 +305,7 @@ Merci également à nos équipes : Thierry Langevin, Huseyin Tanık, Cécile GEO
     statut: "confirme",
     attribution:
       "Rédigé par Jérôme Diawara au nom du partenaire Enedis, publié sur anem.fr. À préciser explicitement sur la page pour ne pas laisser croire à un texte institutionnel de l'ANEM ou fourni tel quel par Enedis (le texte est à la première personne du pluriel côté Enedis : \"notre principale action\", \"Enedis s'est engagée\").",
-    rattachements: [11],
+    rattachements: [20],
     texteDisponibleDansLeRepo: true,
     sourceUrl: "https://www.anem.fr/5138-2/",
     texteIntegral: `En tant que gestionnaire du réseau public de distribution d'électricité sur 95 % du territoire national, Enedis s'est engagée auprès des collectivités territoriales, des opérateurs, des entreprises de télécommunications, de l'Autorité de régulation des communications électroniques et des postes (Arcep), ainsi que des administrations afin de contribuer activement à l'aménagement numérique du territoire.
@@ -300,13 +345,8 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     supportOrigine:
       "Mensuel Pour La Montagne — à créditer explicitement comme publication d'origine, avec la date du numéro",
     statut: "confirme",
-    rattachements: [10],
+    rattachements: [19],
     texteDisponibleDansLeRepo: false,
-    // Incohérence à signaler à Jérôme : la fiche 10 du document de contenu marque ces
-    // articles [confirmé — Jérôme les a récupérés], mais ils n'apparaissent pas encore
-    // dans "5 - Communication - Pièces écrites confirmées (textes intégraux)". Vérifier
-    // qu'il s'agit bien de vrais articles parus dans le mensuel imprimé (et pas de
-    // simples annonces du site anem.fr type "PLM de mars est disponible") avant intégration.
   },
   {
     id: "anem-cp-elisabeth-borne",
@@ -316,7 +356,7 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "ANEM",
     supportOrigine: "anem.fr",
     statut: "texte-manquant",
-    rattachements: [12],
+    rattachements: [25],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -325,7 +365,7 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "ANEM",
     supportOrigine: "anem.fr — titres, dates et liens",
     statut: "selection-en-cours",
-    rattachements: [10, 12],
+    rattachements: [18, 19, 25],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -334,7 +374,7 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "LEA-CFI",
     supportOrigine: "Catalogue de formation LEA-CFI (parmi 120+ textes réécrits)",
     statut: "a-verifier",
-    rattachements: [2],
+    rattachements: [3],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -343,7 +383,7 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "ANEM",
     supportOrigine: "ANEM",
     statut: "a-verifier",
-    rattachements: [12],
+    rattachements: [25],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -352,7 +392,7 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "Les Bonnes Choses",
     supportOrigine: "Site Gourmiz' (lien externe si toujours en ligne)",
     statut: "a-verifier",
-    rattachements: [6],
+    rattachements: [12],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -361,7 +401,7 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "Conseil départemental des Yvelines",
     supportOrigine: "Conseil départemental des Yvelines",
     statut: "a-verifier",
-    rattachements: [13],
+    rattachements: [27],
     texteDisponibleDansLeRepo: false,
   },
   {
@@ -370,13 +410,14 @@ Ainsi Enedis est très engagée et va poursuivre son action pour favoriser le d�
     commanditaire: "LIPTON FIT",
     supportOrigine: "LIPTON FIT",
     statut: "a-verifier", // probablement non publiable (documents internes)
-    rattachements: [18],
+    rattachements: [35],
     texteDisponibleDansLeRepo: false,
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Fiches projets — 18, numérotées comme dans le document de contenu
+// Fiches projets — 35, numérotées comme dans le document de contenu v2
+// (redécoupage du 17/08/2026, remplace les 18 fiches v1)
 // ---------------------------------------------------------------------------
 
 export interface ProjectCard {
@@ -400,10 +441,11 @@ export const PROJECTS: ProjectCard[] = [
     competences: [
       "evenementiel",
       "relations-presse",
-      "communication-strategique",
-      "communication-institutionnelle",
-      "partenariats-sponsoring",
+      "strategie-communication-institutionnelle",
+      "partenariats-relais",
       "structuration-outils",
+      "production-creative",
+      "marketing-digital-acquisition",
     ],
     pitch:
       "Organiser le congrès des 80 ans d'une fédération agricole nationale, sur le site de Rungis, avec un objectif d'autofinancement et de bénéfice, dans un contexte agricole tendu.",
@@ -411,80 +453,102 @@ export const PROJECTS: ProjectCard[] = [
 
 **L'enjeu :** Ce n'est pas qu'une fête d'anniversaire : le congrès doit s'autofinancer et dégager un bénéfice pour la fédération. Et il tombe dans un contexte agricole tendu (sécheresse, incertitude budgétaire chez les producteurs, élections présidentielles qui approchent) qui rend les sponsors et les invités plus difficiles à mobiliser que d'habitude.
 
-**Ce que j'ai fait :** Je pilote la mission sur trois dimensions. Sur le fond, je travaille directement avec le directeur général et les coprésidents sur le contenu du congrès : construction des tables rondes, sélection et gestion des intervenants. Sur la forme, je pilote la communication de l'événement et la création des visuels, validés par la présidence. Sur la logistique, je m'appuie sur des prestataires externes pour le traiteur, les buffets, la soirée de gala, ainsi que le repérage des lieux. En parallèle, je prospecte les sponsors avec un outil de suivi que j'ai construit moi-même (Airtable + Make, connecté à ma messagerie).
+**Ce que j'ai fait :** Je pilote la mission sur trois dimensions. Sur le fond, je travaille directement avec le directeur général et les coprésidents sur le contenu du congrès : construction des tables rondes, sélection et gestion des intervenants. Sur la forme, je pilote la communication de l'événement et la création des visuels, validés par la présidence — avec un volet digital dédié : un site web spécifique au congrès, des publications LinkedIn régulières et la production de contenus vidéo. Sur la logistique, je m'appuie sur des prestataires externes pour le traiteur, les buffets, la soirée de gala, ainsi que le repérage des lieux. En parallèle, je prospecte les sponsors avec un outil de suivi que j'ai construit moi-même (Airtable + Make, connecté à ma messagerie).
 
 **Où j'en suis :** 25 K€ de sponsoring déjà sécurisés sur un objectif de 80 à 100 K€, avec un deuxième temps de relance prévu à la rentrée. En septembre : nouvelle vague d'invitations, communiqué de presse conjoint avec la Semmaris, et diffusion via ses propres canaux.
 
 **Ce que ça dit de ma méthode :** Reprendre un projet à mi-parcours sans perdre le fil, c'est d'abord une question d'outils : j'ai commencé par structurer avant de communiquer, un budget prévisionnel, un suivi de tâches, un outil de suivi sponsors. Sur un enjeu financier réel (autofinancement + bénéfice), l'improvisation n'a pas sa place. Et c'est aussi une question de posture : être présent sur le fond avec la direction autant que sur la forme et la logistique.`,
     visuelsAPrevoir:
-      "Visuel officiel du congrès (une fois finalisé), captures de l'outil de suivi sponsors, photos du site de Rungis, et, après l'événement, photos du congrès et bilan chiffré définitif.",
+      "Visuel officiel du congrès, captures de l'outil de suivi sponsors et du site dédié, photos du site de Rungis, et, après l'événement, photos du congrès et bilan chiffré définitif.",
     pieceEcriteIds: [],
   },
   {
     number: 2,
-    slug: "refonte-identite-catalogue",
-    title: "Refonte de l'identité et du catalogue de formation",
+    slug: "identite-graphique-lea-cfi",
+    title: "Identité graphique",
     company: "lea-cfi",
-    competences: [
-      "communication-strategique",
-      "redactionnel-editorial",
-      "structuration-outils",
-      "production-creative",
-    ],
+    competences: ["production-creative"],
     pitch:
-      "Retravailler l'identité et refondre le catalogue d'une école en risque de fermeture, pour donner envie de la choisir plutôt qu'une autre.",
-    corps: `**Contexte :** LEA-CFI, école de la CCI Île-de-France (40 parcours diplômants, 1 700 apprenants, 130 collaborateurs, 3 campus), traversait déjà un risque de fermeture au moment où je suis arrivé. Plusieurs personnes ont été recrutées à cette période dans le cadre d'un plan de redressement global, chacune sur sa propre mission. La mienne, en tant que Responsable Communication et Marketing : retravailler l'identité de l'école, refondre son catalogue, produire des visuels et des contenus qui donnent envie de la choisir plutôt qu'une autre.
+      "Retravailler l'identité visuelle d'une école en risque de fermeture, pour donner envie de la choisir plutôt qu'une autre.",
+    corps: `**Contexte :** LEA-CFI, école de la CCI Île-de-France (40 parcours diplômants, 1 700 apprenants, 130 collaborateurs, 3 campus), traversait déjà un risque de fermeture au moment où je suis arrivé. Ma mission, en tant que Responsable Communication et Marketing, incluait de retravailler l'identité visuelle de l'école pour produire des visuels qui donnent envie de la choisir plutôt qu'une autre.
 
-**Ce que j'ai fait :**
-
-- **Ligne éditoriale et comité éditorial transverse** : +5 % de trafic web en 6 mois, +2 % de taux d'ouverture des newsletters.
-- **Refonte du catalogue de formation** (45 formations restructurées, 120+ textes réécrits) : -70 % de délai de production, -60 % de coûts de mise à jour, grâce à une base de données centralisée et une automatisation Canva/Excel qui a remplacé un processus entièrement manuel sous InDesign. 5 000 fiches formation imprimées chaque année.`,
-    visuelsAPrevoir: "Avant/après du catalogue, visuels de la nouvelle identité graphique.",
-    pieceEcriteIds: ["lea-cfi-catalogue-extraits"],
-  },
-  {
-    number: 3,
-    slug: "reseau-alumni-videos",
-    title: "Réseau alumni, formats vidéo et présence terrain",
-    company: "lea-cfi",
-    competences: ["marque-employeur-communication-interne", "production-creative", "evenementiel"],
-    pitch:
-      "Construire de toutes pièces une communauté alumni et donner à la communication une présence de terrain, sur les 3 campus d'une école.",
-    corps: `**Ce que j'ai fait :**
-
-- **Réseau alumni** créé de toutes pièces : +300 membres sur le groupe LinkedIn en 2 semaines, événement inaugural de 200 personnes (3 tables rondes, 12 intervenants).
-- **Formats vidéo créés en interne** : "La Parole aux Anciens" (interviews d'alumni), "Nos Apprentis sur le Terrain" (reportages en entreprise), "Questions Rapides" (format court pour inciter aux Journées Portes Ouvertes), vidéos de présentation des formations.
-- **Visibilité et présence terrain du service communication** : déplacements réguliers sur les 3 campus, valorisation des professeurs et des élèves. Un service de com transversal doit être vu et connu pour devenir la référence naturelle vers laquelle on se tourne pour faire circuler l'information.
-- **Réseau d'affichage interne et écrans dynamiques sur les 3 campus** : mise en place de panneaux d'affichage physiques pour porter les messages clés (Journées Portes Ouvertes, recrutement, soirée des anciens), complétée par un réseau d'écrans dynamiques diffusant informations et petits formats vidéo, positionnés aux points de passage stratégiques de chaque campus.`,
-    visuelsAPrevoir:
-      "Extraits des 3 séries vidéo, photo de l'événement alumni, exemple d'affiche du réseau interne.",
+**Ce que j'ai fait :** Conception d'une nouvelle identité graphique pour l'école : nouvelles affiches, nouveaux visuels, en concertation avec les élèves.`,
+    visuelsAPrevoir: "Avant/après de l'identité graphique, exemples d'affiches.",
     pieceEcriteIds: [],
   },
   {
-    number: 4,
-    slug: "campagnes-digitales-crm",
-    title: "Campagnes digitales, CRM et diffusion territoriale",
+    number: 3,
+    slug: "catalogue-formation-lea-cfi",
+    title: "Catalogue de formation",
     company: "lea-cfi",
-    competences: ["marketing-digital-acquisition", "communication-institutionnelle", "structuration-outils"],
+    competences: ["redactionnel-editorial", "structuration-outils", "relations-presse"],
     pitch:
-      "Faire passer la communication digitale et la diffusion territoriale d'une école d'une logique coup par coup à une stratégie structurée, outillée par un CRM.",
-    corps: `**Ce que j'ai fait :**
-
-- **Campagne digitale refondue** : passage d'une logique au coup par coup à une planification sur l'année entière, avec des innovations comme une session de contenu UGC, en collaboration avec une agence spécialisée en marketing digital.
-- **Gestion du CRM et des campagnes d'e-mailing** : conception des scénarios d'envoi, création des contenus, et construction de parcours clients pour accompagner chaque profil (prospect, candidat, futur apprenant) selon son étape dans le cycle de décision.
-- **Base de données de contacts en mairies**, dans les départements où l'école recrutait ses élèves : diffusion des communiqués de presse, demande de relais, et mise à disposition de kits de communication clé en main pour parler des Journées Portes Ouvertes.
-- **Campagnes marketing 360°** (budget annuel 100 K€) : +10 % de participation aux Journées Portes Ouvertes.
-- Management d'une équipe de 3 personnes, budget communication annuel de 150 K€.`,
-    visuelsAPrevoir: "Captures des campagnes digitales si disponibles.",
-    pieceEcriteIds: [
-      "lea-cfi-hackathon-energie",
-      "lea-cfi-titre-professionnel-electricien",
-      "lea-cfi-inventaire-59-actualites",
-    ],
+      "Refondre le contenu du catalogue de formation d'une école en risque de fermeture — architecture, textes, données — distinct du travail sur son identité visuelle (fiche 2).",
+    corps: `**Ce que j'ai fait :** Refonte du catalogue de formation (45 formations restructurées, 120+ textes réécrits) : -70 % de délai de production, -60 % de coûts de mise à jour, grâce à une base de données centralisée et une automatisation Canva/Excel qui a remplacé un processus entièrement manuel sous InDesign. 5 000 fiches formation imprimées chaque année. Participation à la rédaction des communiqués de presse liés aux nouvelles offres de formation — notamment sur les métiers de l'énergie — et aux partenariats entreprises associés (SPIE Facilities, IDEX, Transilien, ENGIE) négociés par d'autres services.`,
+    visuelsAPrevoir: "Avant/après du catalogue.",
+    pieceEcriteIds: ["lea-cfi-hackathon-energie", "lea-cfi-titre-professionnel-electricien", "lea-cfi-catalogue-extraits", "lea-cfi-inventaire-59-actualites"],
+  },
+  {
+    number: 4,
+    slug: "ligne-editoriale-lea-cfi",
+    title: "Ligne éditoriale du site et contenus rédactionnels réguliers",
+    company: "lea-cfi",
+    competences: ["redactionnel-editorial"],
+    pitch:
+      "Faire vivre la ligne éditoriale et le fil d'actualité d'une école sur 3 campus, au-delà du catalogue de formation.",
+    corps: `**Ce que j'ai fait :** Ligne éditoriale et comité éditorial transverse animés : +5 % de trafic web en 6 mois, +2 % de taux d'ouverture des newsletters. Rédaction d'articles portraits et d'interviews écrites d'alumni et d'apprentis — parcours inspirants, retours d'expérience — distincts des interviews vidéo de la fiche 6.`,
+    visuelsAPrevoir: "Captures d'articles publiés.",
+    pieceEcriteIds: ["lea-cfi-inventaire-59-actualites"],
   },
   {
     number: 5,
-    slug: "communication-de-crise-fermeture",
+    slug: "reseau-alumni-lea-cfi",
+    title: "Réseau alumni",
+    company: "lea-cfi",
+    competences: ["animation-communaute", "evenementiel"],
+    pitch:
+      "Construire de toutes pièces une communauté alumni sur les 3 campus d'une école — le seul projet LEA-CFI que j'ai piloté seul, de bout en bout.",
+    corps: `**Ce que j'ai fait :** Réseau alumni créé de toutes pièces : +300 membres sur le groupe LinkedIn en 2 semaines, événement inaugural de 200 personnes (3 tables rondes, 12 intervenants), suivi d'une seconde soirée de retrouvailles.`,
+    visuelsAPrevoir: "Photo de l'événement alumni.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 6,
+    slug: "formats-video-lea-cfi",
+    title: "Formats vidéo",
+    company: "lea-cfi",
+    competences: ["production-creative"],
+    pitch: "Créer, en interne, plusieurs séries vidéo pour donner à voir la vie de l'école.",
+    corps: `**Ce que j'ai fait :** "La Parole aux Anciens" (interviews vidéo d'alumni), "Nos Apprentis sur le Terrain" (reportages en entreprise), "Questions Rapides" (format court pour inciter aux Journées Portes Ouvertes), vidéos de présentation des formations.`,
+    visuelsAPrevoir: "Extraits des 4 séries vidéo.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 7,
+    slug: "presence-terrain-lea-cfi",
+    title: "Présence terrain, affichage et goodies",
+    company: "lea-cfi",
+    competences: ["communication-interne-cohesion-equipe", "structuration-outils", "production-creative"],
+    pitch: "Rendre la fonction communication visible et identifiée sur les 3 campus d'une école.",
+    corps: `**Ce que j'ai fait :** Présence régulière sur les 3 campus, déplacements, valorisation des professeurs et des élèves — un service de com transversal doit être vu et connu pour devenir la référence naturelle vers laquelle on se tourne pour faire circuler l'information. Déploiement d'un réseau d'affichage physique portant les messages clés (Journées Portes Ouvertes, recrutement, soirée des anciens), complété par un réseau d'écrans dynamiques diffusant informations et petits formats vidéo aux points de passage stratégiques de chaque campus. Gestion des goodies, dont une collection de tee-shirts.`,
+    visuelsAPrevoir: "Exemple d'affiche du réseau interne, photo des écrans dynamiques, visuel des tee-shirts.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 8,
+    slug: "campagnes-digitales-crm-lea-cfi",
+    title: "Campagnes digitales, CRM et diffusion territoriale",
+    company: "lea-cfi",
+    competences: ["marketing-digital-acquisition", "partenariats-relais", "structuration-outils"],
+    pitch:
+      "Faire passer la communication digitale et la diffusion territoriale d'une école d'une logique coup par coup à une stratégie structurée, outillée par un CRM.",
+    corps: `**Ce que j'ai fait :** Campagne digitale refondue : passage d'une logique au coup par coup à une planification sur l'année entière, avec des innovations comme une session de contenu UGC — dont le concours interne "Rejoins mon école", donnant la parole à des étudiants-ambassadeurs et dont les contenus ont été réutilisés sur les réseaux sociaux — en collaboration avec une agence spécialisée en marketing digital. Gestion du CRM et des campagnes d'e-mailing : conception des scénarios d'envoi, création des contenus, et construction de parcours clients pour accompagner chaque profil (prospect, candidat, futur apprenant) selon son étape dans le cycle de décision. Base de données de contacts en mairies, dans les départements où l'école recrutait ses élèves : diffusion des communiqués de presse, demande de relais, et mise à disposition de kits de communication clé en main pour parler des Journées Portes Ouvertes. Campagnes marketing 360° (budget annuel 100 K€) : +10 % de participation aux Journées Portes Ouvertes. Management d'une équipe de 3 personnes, budget communication annuel de 150 K€.`,
+    visuelsAPrevoir: "Captures des campagnes digitales si disponibles, extrait du concours \"Rejoins mon école\".",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 9,
+    slug: "communication-crise-fermeture-lea-cfi",
     title: "Communication de crise — la fermeture de LEA-CFI",
     company: "lea-cfi",
     competences: ["communication-de-crise"],
@@ -495,9 +559,34 @@ export const PROJECTS: ProjectCard[] = [
     pieceEcriteIds: [],
   },
   {
-    number: 6,
-    slug: "pilotage-ecommerce-3-marques",
-    title: "Pilotage e-commerce des 3 marques (Essenciagua, La Sablésienne, Gourmiz')",
+    number: 10,
+    slug: "appui-evenementiel-lea-cfi",
+    title: "Communication et appui événementiel",
+    company: "lea-cfi",
+    competences: ["evenementiel", "redactionnel-editorial"],
+    pitch:
+      "Assurer la communication et un appui logistique ponctuel sur les nombreux événements de la vie d'une école, sans en être le pilote.",
+    corps: `**Ce que j'ai fait :** Communication (invitations, supports) de plusieurs événements internes organisés par d'autres services : Journées Portes Ouvertes, Hackathon Énergie, Concours d'éloquence, concours technique AICVF, Job Dating. Appui logistique ponctuel sur ces événements — achat de goodies, envoi d'invitations. Représentation de l'école sur des salons étudiants externes (Studyrama, Salon de l'Apprentissage).
+
+**Ce que ça dit de ma méthode :** Contrairement au réseau alumni (fiche 5), que j'ai piloté seul de bout en bout, mon rôle ici était celui d'un appui communication et logistique sur des événements pilotés par d'autres services — savoir jouer les deux partitions, porter un projet seul et soutenir un collectif, fait aussi partie du métier.`,
+    visuelsAPrevoir: "Photos des Journées Portes Ouvertes, du Hackathon Énergie.",
+    pieceEcriteIds: ["lea-cfi-inventaire-59-actualites"],
+  },
+  {
+    number: 11,
+    slug: "engagement-rse-lea-cfi",
+    title: "Engagement RSE",
+    company: "lea-cfi",
+    competences: ["strategie-communication-institutionnelle", "redactionnel-editorial"],
+    pitch: "Porter, en plus de mes missions de communication, un rôle de gouvernance au sein du comité RSE de l'école.",
+    corps: `**Ce que j'ai fait :** Membre du comité RSE de l'école, co-responsable RSE avec d'autres membres du comité, en plus de mes missions de communication. Pilotage de la communication autour des actions RSE, dont le Challenge Energic, un mois d'engagement collectif pour la transition énergétique.`,
+    visuelsAPrevoir: "Visuels du Challenge Energic.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 12,
+    slug: "ecommerce-3-marques-lbc",
+    title: "E-commerce des 3 marques (Essenciagua, La Sablésienne, Gourmiz')",
     company: "les-bonnes-choses",
     competences: ["marketing-digital-acquisition", "structuration-outils", "redactionnel-editorial"],
     pitch:
@@ -512,42 +601,65 @@ export const PROJECTS: ProjectCard[] = [
     pieceEcriteIds: ["lbc-gourmiz-articles"],
   },
   {
-    number: 7,
+    number: 13,
     slug: "lancement-luddigekki-usa",
     title: "Lancement de Luddigekki sur le marché américain",
     company: "les-bonnes-choses",
-    competences: ["communication-strategique", "marketing-digital-acquisition", "communication-de-crise"],
+    competences: ["strategie-communication-institutionnelle", "marketing-digital-acquisition", "communication-de-crise", "redactionnel-editorial", "production-creative"],
     pitch:
       "Créer et lancer une marque de A à Z sur un marché inconnu, jusqu'à encaisser une attaque concurrentielle qui a coupé l'accès à la vente.",
-    corps: `**Ce que j'ai fait :** Création et lancement de Luddigekki sur le marché américain, une marque avec 3 lignes de produits : kits de construction type cabanes, jouets antistress et piscines à balles. Positionnement, identité visuelle, co-développement produit avec les usines partenaires, pilotage de la production et d'une logistique internationale conséquente, stratégie D2C (SEO, Search Find Buy, acquisition payante). Recherche et benchmark de nouveaux produits : analyse de la concurrence et méthode de sourcing propre à Amazon. Management d'une personne travaillant à distance sur la marque. Résultat : une marque valorisée jusqu'à 200 K$.
+    corps: `**Ce que j'ai fait :** Création et lancement de Luddigekki sur le marché américain, une marque avec 3 lignes de produits : kits de construction type cabanes, jouets antistress et piscines à balles. Positionnement, identité visuelle, co-développement produit avec les usines partenaires, pilotage de la production et d'une logistique internationale conséquente, stratégie D2C (SEO, Search Find Buy, acquisition payante). Recherche et benchmark de nouveaux produits : analyse de la concurrence et méthode de sourcing propre à Amazon. Management d'une personne travaillant à distance sur la marque. Un blog alimenté d'articles pour la marque, et un compte Instagram ouvert et géré (création de contenu, planification des publications). Résultat : une marque valorisée jusqu'à 200 K$.
 
-**Le coup dur :** Un concurrent a lancé une attaque groupée contre une centaine de vendeurs de la même niche, en accusant Luddigekki d'avoir utilisé le nom de sa marque dans nos listings produits. Amazon a immédiatement coupé notre accès à la vente : perte du référencement, obligation de rapatrier tout le stock, recréer les listings, faire appel à un avocat pour débloquer la situation. La marque ne s'en est jamais complètement remise.
+**Le coup dur :** Un concurrent a lancé une attaque groupée contre une centaine de vendeurs de la même niche, en accusant Luddigekki d'avoir utilisé le nom de sa marque dans nos listings produits. Amazon a immédiatement coupé notre accès à la vente : perte du référencement, obligation de rapatrier tout le stock, recréer les listings, faire appel à un avocat pour débloquer la situation. La marque ne s'en est jamais complètement remise. La gestion de cette crise est restée opérationnelle et juridique, sans volet de communication externe dédié.
 
 **Ce que ça dit de ma méthode :** Cette expérience m'a appris à créer une marque de A à Z sur un marché que je ne connaissais pas, et à encaisser un revers qui ne dépendait pas de moi sans perdre le fil du reste. Elle m'a aussi appris quelque chose sur moi : le rythme du e-commerce au quotidien n'est pas celui dans lequel je suis le plus à l'aise. Je préfère construire une stratégie que la piloter heure par heure.`,
-    visuelsAPrevoir: "Identité visuelle Luddigekki.",
+    visuelsAPrevoir: "Identité visuelle Luddigekki, captures du blog et du compte Instagram.",
     pieceEcriteIds: [],
   },
   {
-    number: 8,
-    slug: "communaute-sportifs-b2b",
-    title: "Communauté sportifs Gourmiz' et développement commercial B2B",
+    number: 14,
+    slug: "communaute-sportifs-gourmiz",
+    title: "Communauté sportifs Gourmiz'",
     company: "les-bonnes-choses",
-    competences: ["partenariats-sponsoring", "production-creative"],
+    competences: ["animation-communaute", "partenariats-relais", "production-creative"],
     pitch:
-      "Construire une communauté de 15 sportifs de haut niveau et développer les ventes B2B en direct auprès de magasins bio.",
-    corps: `**Ce que j'ai fait :** Une communauté de 15 sportifs de haut niveau recrutée et animée pour Gourmiz', avec production de contenus UGC, en binôme avec une autre personne dédiée à la marque. Développement commercial B2B : structuration d'un CRM, prospection directe auprès de magasins bio en Occitanie, 10 contrats de distribution signés.`,
+      "Construire une communauté de 15 sportifs de haut niveau pour Gourmiz', recrutés principalement via les réseaux sociaux.",
+    corps: `**Ce que j'ai fait :** Communauté de 15 sportifs de haut niveau recrutée — majoritairement via les réseaux sociaux — et animée pour Gourmiz', avec production de contenus UGC, en binôme avec une autre personne dédiée à la marque.`,
     visuelsAPrevoir: "Visuels des campagnes sponsors sportifs.",
     pieceEcriteIds: [],
   },
   {
-    number: 9,
+    number: 15,
+    slug: "developpement-commercial-b2b-lbc",
+    title: "Développement commercial B2B",
+    company: "les-bonnes-choses",
+    competences: ["structuration-outils", "partenariats-relais"],
+    pitch:
+      "Développer les ventes B2B en direct auprès de magasins bio, de la prospection à la structuration d'un CRM — un sujet sans lien avec la communauté de sportifs (fiche 14), malgré la marque commune.",
+    corps: `**Ce que j'ai fait :** Démarchage direct de magasins bio en Occitanie. Structuration d'un CRM : collecte et saisie des contacts. 10 contrats de distribution signés.`,
+    visuelsAPrevoir: "Aucun spécifique.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 16,
+    slug: "veille-analyse-marche-lbc",
+    title: "Veille et analyse marché",
+    company: "les-bonnes-choses",
+    competences: ["veille-et-analyse"],
+    pitch: "Nourrir les décisions produit et acquisition des 3 marques par une veille marché et concurrentielle continue.",
+    corps: `**Ce que j'ai fait :** Benchmarks et veille pour comprendre les niches de vente de Gourmiz', Luddigekki et Essenciagua. Analyse des tendances marché et des mots-clés en vue de la création de nouveaux produits. Détermination de l'ordre de mise en ligne des produits à partir de cette analyse.`,
+    visuelsAPrevoir: "Aucun spécifique.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 17,
     slug: "congres-annuel-anem",
     title: "Congrès annuel",
     company: "anem",
-    competences: ["evenementiel", "communication-institutionnelle"],
+    competences: ["evenementiel", "strategie-communication-institutionnelle"],
     pitch:
       "Piloter de bout en bout un congrès annuel de 500 élus de sensibilités politiques très différentes, avec la diplomatie que ça demande.",
-    corps: `**Contexte :** L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 5 000 élus des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir. Le congrès était ma première mission.
+    corps: `**Contexte :** L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 6 000 élus adhérents des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir. Le congrès était ma première mission.
 
 **Ce que j'ai fait :** Congrès annuel (budget 200 K€, 500 élus toutes tendances politiques confondues, ministres, maires, députés, présidents de département) : pilotage de bout en bout, supports, protocole, supervision des prestataires.
 
@@ -560,139 +672,216 @@ Plus largement, coordonner un événement où se croisent 500 élus de sensibili
     pieceEcriteIds: [],
   },
   {
-    number: 10,
+    number: 18,
+    slug: "reseaux-sociaux-videos-anem",
+    title: "Réseaux sociaux et vidéos institutionnelles",
+    company: "anem",
+    competences: ["production-creative", "strategie-communication-institutionnelle", "structuration-outils"],
+    pitch: "Faire entrer une association d'élus dans l'ère des réseaux sociaux et de la vidéo institutionnelle.",
+    corps: `**Ce que j'ai fait :** Pilotage de la stratégie de présence de l'ANEM sur les réseaux sociaux. Pilotage d'une série de vidéos institutionnelles et de témoignages d'élus ("Les élus ont la parole", "Les élus de la montagne témoignent en vidéo", vidéo de présentation "L'ANEM : qu'est-ce que c'est ?"). Pilotage des résumés vidéo du congrès et de la présence de l'association sur YouTube.`,
+    visuelsAPrevoir: "Extraits vidéo, captures des réseaux sociaux.",
+    pieceEcriteIds: ["anem-inventaire-93-actualites"],
+  },
+  {
+    number: 19,
     slug: "pour-la-montagne",
     title: "Rédacteur en chef, Pour La Montagne",
     company: "anem",
     competences: ["redactionnel-editorial"],
     pitch:
       "Rédacteur en chef d'un mensuel institutionnel : gestion des pigistes et du maquettiste, fil rouge éditorial, écriture.",
-    corps: `**Ce que j'ai fait :** Rédacteur en chef du mensuel *Pour La Montagne* (budget 150 K€) : gestion des pigistes et du maquettiste, construction du fil rouge de chaque numéro, rédaction d'articles.`,
+    corps: `**Ce que j'ai fait :** Rédacteur en chef du mensuel *Pour La Montagne* (budget 150 K€) : gestion des pigistes et du maquettiste, construction du fil rouge de chaque numéro. Rôle majoritairement éditorial — commande, relecture, fil rouge — complété par la rédaction de quelques articles à chaque numéro, souvent liés à l'actualité de la communication.`,
     visuelsAPrevoir: "Une du mensuel Pour La Montagne.",
     pieceEcriteIds: ["anem-pour-la-montagne-articles", "anem-inventaire-93-actualites"],
   },
   {
-    number: 11,
-    slug: "refonte-digitale-anem",
-    title: "Refonte digitale et outils de communication institutionnelle",
+    number: 20,
+    slug: "refonte-site-newsletter-anem",
+    title: "Refonte du site et création de la newsletter",
     company: "anem",
-    competences: ["communication-strategique", "structuration-outils", "production-creative"],
-    pitch:
-      "Refondre le site et la newsletter, et construire l'ensemble des outils de communication institutionnelle et de gestion de contacts de l'association.",
-    corps: `**Ce que j'ai fait :**
-
-- **Refonte complète du site internet et création de la newsletter** : nouvelle architecture, réécriture intégrale des contenus, newsletter de l'ANEM créée de toutes pièces, module d'inscription en ligne pour le congrès.
-- **Événementiel institutionnel au-delà du congrès** : organisation des vœux annuels, des réunions départementales (contenus, inscriptions), et mise en place du comité directeur lors de la semaine nationale.
-- **Création de l'ensemble des outils de communication institutionnelle** : plaquettes de présentation, carte de vœux, et tous les supports annuels de l'association.
-- **Gestion de la base de données de contacts** : intégration des nouveaux contacts, structuration de la partie presse.
-- **Gestion des goodies** : recherche et sélection de nouveaux goodies, principalement pour le congrès.
-- Management d'apprentis et de stagiaires.`,
-    visuelsAPrevoir: "Captures du site refondu (avant/après si possible), plaquette institutionnelle, exemple de goodies.",
+    competences: ["structuration-outils", "redactionnel-editorial"],
+    pitch: "Refondre le site internet de l'association et créer sa newsletter, qui n'existait pas avant.",
+    corps: `**Ce que j'ai fait :** Refonte complète du site internet : nouvelle architecture, réécriture intégrale des contenus. Création de la newsletter de l'ANEM de toutes pièces — elle n'existait pas avant mon arrivée. Création d'un module d'inscription en ligne pour le congrès.`,
+    visuelsAPrevoir: "Captures du site refondu (avant/après si possible).",
     pieceEcriteIds: ["anem-enedis-reseau-thd"],
   },
   {
-    number: 12,
-    slug: "relations-presse-partenariats-anem",
-    title: "Relations presse et partenariats",
+    number: 21,
+    slug: "temps-institutionnels-anem",
+    title: "Organisation des temps institutionnels récurrents",
     company: "anem",
-    competences: ["relations-presse", "partenariats-sponsoring"],
+    competences: ["evenementiel", "strategie-communication-institutionnelle"],
+    pitch: "Organiser, au-delà du congrès annuel (fiche 17), les temps institutionnels récurrents de la vie de l'association.",
+    corps: `**Ce que j'ai fait :** Organisation des vœux annuels et des réunions départementales (contenus, inscriptions). Mise en place du comité directeur lors de la semaine nationale.`,
+    visuelsAPrevoir: "Aucun spécifique.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 22,
+    slug: "outils-imprimes-anem",
+    title: "Outils imprimés de communication institutionnelle",
+    company: "anem",
+    competences: ["production-creative"],
+    pitch: "Concevoir l'ensemble des supports imprimés officiels d'une association d'élus.",
+    corps: `**Ce que j'ai fait :** Création de l'ensemble des outils de communication institutionnelle : plaquettes de présentation, carte de vœux, et tous les supports annuels de l'association. Sélection des goodies, principalement pour le congrès.`,
+    visuelsAPrevoir: "Plaquette institutionnelle, exemple de goodies.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 23,
+    slug: "base-donnees-contacts-anem",
+    title: "Gestion de la base de données de contacts",
+    company: "anem",
+    competences: ["structuration-outils"],
+    pitch: "Structurer et faire vivre la base de contacts d'une association de plus de 6 000 élus adhérents.",
+    corps: `**Ce que j'ai fait :** Gestion de la base de données de contacts : intégration des nouveaux contacts, structuration de la partie presse. Management d'apprentis et de stagiaires.`,
+    visuelsAPrevoir: "Aucun spécifique.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 24,
+    slug: "partenariats-institutionnels-anem",
+    title: "Partenariats institutionnels",
+    company: "anem",
+    competences: ["partenariats-relais", "evenementiel"],
     pitch:
-      "Entretenir et développer le portefeuille de partenaires institutionnels de l'association, et organiser la présence presse autour des élus.",
-    corps: `**Ce que j'ai fait :**
-
-- **Suivi des partenaires existants et prospection de nouveaux partenariats institutionnels** : SFR, Caisse des Dépôts, EDF, Engie, Citéo, Suez, et deux nouveaux partenariats signés (Médadom et Camping Car Park, 10 K€/an chacun).
-- **Relations presse** : communiqués, dossiers de presse, conférences de presse, base de données journalistes, dont la partie presse créée de toutes pièces. Mise en relation des élus avec les journalistes et organisation des interviews (placement presse).
+      "Entretenir et développer le portefeuille de partenaires institutionnels et financiers d'une association d'élus, distinct des relations presse (fiche 25).",
+    corps: `**Ce que j'ai fait :** Entretien des partenariats historiques (SFR, Caisse des Dépôts, EDF, Engie, Citéo, Suez) et prospection de nouveaux partenaires — recherche en ligne, salons — deux nouveaux partenariats signés (Médadom et Camping Car Park, 10 K€/an chacun). Rédaction des conventions de partenariat et organisation d'un événement autour de chaque signature. Suivi à l'année du respect des contreparties : publications en magazine, stands au congrès, mise en avant du dirigeant du partenaire.
 
 **Ce que ça dit de ma méthode :** Reprendre une communication qui fonctionne mais qui n'avance plus, ce n'est pas pareil que repartir de zéro : il faut convaincre en douceur, pas révolutionner. C'est une compétence à part entière.`,
+    visuelsAPrevoir: "Aucun spécifique.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 25,
+    slug: "relations-presse-anem",
+    title: "Relations presse",
+    company: "anem",
+    competences: ["relations-presse"],
+    pitch: "Organiser la présence presse autour des élus d'une association nationale.",
+    corps: `**Ce que j'ai fait :** Relations presse : communiqués, dossiers de presse, conférences de presse, base de données journalistes créée de toutes pièces. Mise en relation des élus avec les journalistes et organisation des interviews (placement presse), essentiellement en presse écrite.`,
     visuelsAPrevoir: "Aucun spécifique.",
     pieceEcriteIds: ["anem-cp-elisabeth-borne", "anem-inventaire-93-actualites", "anem-dossiers-presse"],
   },
   {
-    number: 13,
+    number: 26,
     slug: "campagne-c-est-tout-ca-les-yvelines",
     title: "Campagne \"C'est tout ça les Yvelines\"",
     company: "yvelines",
-    competences: ["communication-strategique", "production-creative"],
+    competences: ["strategie-communication-institutionnelle", "production-creative"],
     pitch:
-      "Une campagne 360° à 350 K€ pour donner envie aux Franciliens de découvrir le département, avec un vrai défi de hiérarchisation du message.",
+      "Une campagne 360° de 6 mois, à 350 K€, pour donner envie aux Franciliens de découvrir le département, avec un vrai défi de hiérarchisation du message.",
     corps: `**Contexte général du poste :** Six ans au cabinet du Président du Département des Yvelines (1,4 M d'habitants, budget annuel de 1,5 Md€), en tant que référent communication pour plusieurs directions à la fois (Environnement, Tourisme, Mobilités, Finances, Enfance & Solidarités). C'est l'expérience la plus longue et la plus large de mon parcours.
 
-**Ce que j'ai fait :** "C'est tout ça les Yvelines" (350 K€) : une campagne 360° pour donner envie aux Franciliens de venir découvrir le département. Le défi n'était pas créatif au sens classique : c'était un défi de hiérarchisation. Le Département voulait tout montrer de ce qu'il fait, ce qui a rendu le film long et la campagne d'affichage complexe à construire pour rester lisible.
-
-**Le quotidien, en toile de fond :** Derrière ces campagnes, six ans de travail de fond : rédaction d'éléments de langage pour les élus (inaugurations de parcs, de chantiers routiers…), conception de plaquettes pour les services sociaux (adoption, protection maternelle et infantile, personnes âgées), communiqués de presse, documents d'information pour les Yvelinois, suivi des marchés publics, conseil éditorial auprès des directions, management d'apprentis.
-
-**Ce que ça dit de ma méthode :** Une collectivité comme celle-là m'a appris à faire cohabiter deux échelles de temps : le temps long des grandes campagnes institutionnelles, et le temps court d'un communiqué à boucler dans la journée. C'est cette polyvalence, plus que tel ou tel projet en particulier, qui définit le poste.`,
+**Ce que j'ai fait :** "C'est tout ça les Yvelines" (350 K€, 6 mois) : une campagne 360° pour donner envie aux Franciliens de venir découvrir le département. Le défi n'était pas créatif au sens classique : c'était un défi de hiérarchisation. Le Département voulait tout montrer de ce qu'il fait, ce qui a rendu le film long et la campagne d'affichage complexe à construire pour rester lisible.`,
     visuelsAPrevoir: "Visuels de la campagne \"C'est tout ça les Yvelines\".",
-    pieceEcriteIds: ["yvelines-elements-langage"],
-  },
-  {
-    number: 14,
-    slug: "festival-cinema-yvelines",
-    title: "Festival \"Les Yvelines font leur cinéma\"",
-    company: "yvelines",
-    competences: ["evenementiel"],
-    pitch: "Un festival de cinéma en plein air, 300 K€/an, jusqu'à 10 000 spectateurs sur une édition.",
-    corps: `**Ce que j'ai fait :** Le festival "Les Yvelines font leur cinéma" (300 K€/an, 26 séances) : jusqu'à 10 000 spectateurs sur une édition. Plan de communication, relations avec les communes partenaires, achat média, coordination des prestataires.`,
-    visuelsAPrevoir: "Photos du festival de cinéma.",
     pieceEcriteIds: [],
   },
   {
-    number: 15,
+    number: 27,
+    slug: "missions-transverses-yvelines",
+    title: "Missions transverses du poste",
+    company: "yvelines",
+    competences: ["redactionnel-editorial", "relations-presse", "strategie-communication-institutionnelle"],
+    pitch: "Le quotidien de 6 ans au cabinet du Président du Département, en toile de fond des grandes campagnes (fiche 26) et projets ponctuels (fiches 28 à 32).",
+    corps: `**Ce que j'ai fait :** Rédaction d'éléments de langage pour les élus (inaugurations de parcs, de chantiers routiers). Conception de plaquettes pour les services sociaux (adoption, protection maternelle et infantile, personnes âgées). Rédaction de communiqués de presse et de documents d'information pour les Yvelinois. Suivi des marchés publics. Conseil éditorial auprès des directions. Management d'apprentis.
+
+**Ce que ça dit de ma méthode :** Une collectivité comme celle-là m'a appris à faire cohabiter deux échelles de temps : le temps long des grandes campagnes institutionnelles, et le temps court d'un communiqué à boucler dans la journée. C'est cette polyvalence, plus que tel ou tel projet en particulier, qui définit le poste.`,
+    visuelsAPrevoir: "Aucun spécifique.",
+    pieceEcriteIds: ["yvelines-elements-langage"],
+  },
+  {
+    number: 28,
+    slug: "inauguration-parc-peuple-herbe",
+    title: "Inauguration du Parc du Peuple de l'Herbe",
+    company: "yvelines",
+    competences: ["evenementiel"],
+    pitch: "Organiser l'inauguration d'un parc écologique, en pilote communication d'un projet porté par la direction de l'Environnement.",
+    corps: `**Contexte :** Le Parc du Peuple de l'Herbe, un parc dédié à la préservation d'un milieu naturel sur une ancienne carrière, porté par la direction de l'Environnement du Département.
+
+**Ce que j'ai fait :** Organisation de l'événement d'inauguration du parc : sécurité, communication, attractions sur le lieu. Coordination de la direction de l'Environnement, de la commune, des intervenants, des partenaires et des prestataires. Budget d'environ 100 K€.`,
+    visuelsAPrevoir: "Photos du parc et de l'inauguration.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 29,
+    slug: "carte-voeux-departement-yvelines",
+    title: "Carte de vœux annuelle du Département",
+    company: "yvelines",
+    competences: ["production-creative", "structuration-outils"],
+    pitch: "Concevoir, chaque année, la carte de vœux du Département — de l'idée créative à la distribution.",
+    corps: `**Ce que j'ai fait :** Recherche de concepts créatifs et brief à l'agence. Pilotage de la production, validation par les élus. Gestion des imprimeurs, de la signature du Président et des élus, et de la distribution. Préparation et diffusion d'une version numérique, mise à disposition des agents du Département.`,
+    visuelsAPrevoir: "Exemples de cartes de vœux (versions print et numérique).",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 30,
+    slug: "festival-cinema-yvelines",
+    title: "Festival \"Les Yvelines font leur cinéma\"",
+    company: "yvelines",
+    competences: ["evenementiel", "partenariats-relais", "production-creative", "marketing-digital-acquisition"],
+    pitch: "Un festival de cinéma en plein air, 300 K€/an, jusqu'à 10 000 spectateurs sur une édition — avec tout un travail en amont invisible au public.",
+    corps: `**Ce que j'ai fait :** Plan de communication du festival (26 séances). Prise de contact avec les mairies pour définir les subventions du département et sélection des communes hôtes. Sélection des films diffusés et obtention des droits de diffusion. Création de spots de promotion du département, projetés en début de chaque séance. Achat média, coordination des prestataires. Coordination avec la community manager pour l'animation de la page Facebook du festival.`,
+    visuelsAPrevoir: "Photos du festival, extrait d'un spot de promotion.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 31,
     slug: "ybox",
     title: "Ybox",
     company: "yvelines",
-    competences: ["partenariats-sponsoring"],
-    pitch: "Lancer un coffret de promotion touristique du territoire, en partenariat avec Smartbox.",
-    corps: `**Ce que j'ai fait :** Ybox (600 K€, en partenariat avec Smartbox) : lancement d'un coffret de promotion touristique du territoire.`,
+    competences: ["partenariats-relais", "structuration-outils", "evenementiel", "production-creative", "marketing-digital-acquisition", "strategie-communication-institutionnelle"],
+    pitch: "Lancer un coffret de promotion touristique du territoire, en partenariat avec Smartbox — un projet complet, de la stratégie à la soirée de lancement.",
+    corps: `**Ce que j'ai fait :** Définition de la stratégie de lancement du coffret (600 K€, en partenariat avec Smartbox). Coordination avec la direction du Tourisme, notamment sur la distribution du coffret. Gestion des marchés publics du projet. Gestion du partenariat avec Smartbox et suivi des entreprises partenaires intégrées dans le coffret. Relais d'information et de communication autour du lancement. Organisation d'une soirée de lancement pour présenter le projet. Pilotage d'une campagne de communication (affichage, digital) et du graphisme/visuel avec les créatifs.`,
     visuelsAPrevoir: "Visuel Ybox.",
     pieceEcriteIds: [],
   },
   {
-    number: 16,
+    number: 32,
     slug: "affichage-dynamique-yvelines",
     title: "Réseau d'affichage dynamique du Département",
     company: "yvelines",
     competences: ["structuration-outils", "production-creative"],
-    pitch: "Un projet plus technique, entre besoins des directions, coordination DSI et création de contenus.",
-    corps: `**Ce que j'ai fait :** Le réseau d'affichage dynamique du Département (60 K€/an) : un projet plus technique, entre besoins des directions, coordination DSI et création de contenus.`,
+    pitch: "Déployer et faire vivre un réseau d'écrans dynamiques dans les lieux d'accueil du public du Département.",
+    corps: `**Ce que j'ai fait :** Montage du marché public et choix du prestataire (60 K€/an). Création des spots et boucles vidéo diffusés, avec le prestataire. Repérage des lieux d'installation des écrans. Gestion et suivi du budget. Sélection des sujets affichés selon les demandes remontées par les directions. Gestion de la diffusion et de la programmation dans chaque lieu — essentiellement les lieux d'accueil du public type SAS, PMI.`,
     visuelsAPrevoir: "Photo du réseau d'affichage.",
     pieceEcriteIds: [],
   },
   {
-    number: 17,
+    number: 33,
     slug: "paris-nice",
     title: "Paris-Nice",
     company: "yvelines",
     competences: ["evenementiel"],
     pitch:
       "Le volet communication d'une étape francilienne de course cycliste internationale, une mission ponctuelle dans le cadre d'un roulement entre chargés de communication.",
-    corps: `**Ce que j'ai fait :** Paris-Nice : sur le volet communication de l'étape francilienne de cette course cycliste (budget global de la manifestation : 2 M€), j'ai géré l'affichage, la campagne de communication, l'organisation du stand et la préparation des goodies, en lien avec le service événementiel. Une mission ponctuelle, faite une seule année dans le cadre d'un roulement entre chargés de communication.`,
+    corps: `**Ce que j'ai fait :** Sur le volet communication de l'étape francilienne de cette course cycliste (budget global de la manifestation : 2 M€), j'ai géré l'affichage, la campagne de communication, l'organisation du stand et la préparation des goodies, en lien avec le service événementiel. Une mission ponctuelle, faite une seule année dans le cadre d'un roulement entre chargés de communication. Périmètre volontairement réduit — pas d'éléments supplémentaires à ajouter.`,
     visuelsAPrevoir: "Aucun spécifique.",
     pieceEcriteIds: [],
   },
   {
-    number: 18,
-    slug: "cohesion-interne-lipton-fit",
-    title: "Cohésion interne et refonte du site web",
+    number: 34,
+    slug: "communication-externe-lipton-fit",
+    title: "Communication externe",
     company: "lipton-fit",
-    competences: ["marque-employeur-communication-interne", "redactionnel-editorial", "production-creative"],
+    competences: ["structuration-outils", "redactionnel-editorial", "relations-presse", "evenementiel", "production-creative"],
+    pitch: "Porter la voix externe d'un cabinet de conseil d'une soixantaine de consultants, en quasi-autonomie complète.",
+    corps: `**Contexte :** Mon premier poste, dans un cabinet de conseil en banque, assurance et finance d'une soixantaine de consultants, majoritairement de la communication interne avec une part d'externe, et souvent en autonomie complète (ma responsable a été deux fois en congé maternité pendant ces quatre ans).
+
+**Ce que j'ai fait :** Pilotage de la refonte du site web du cabinet, conception et rédaction intégrale des contenus, avec l'appui de quelques consultants techniques. Gestion des réseaux sociaux du cabinet (LinkedIn, Facebook). Rédaction de quelques communiqués de presse. Organisation de quelques événements externes, pour permettre aux clients de rencontrer les consultants du cabinet. Conception de la carte de vœux annuelle du cabinet — une collaboration freelance toujours active aujourd'hui (voir aussi la partie Créativité, section Design & illustration).`,
+    visuelsAPrevoir: "Captures du site web refondu, exemples de cartes de vœux.",
+    pieceEcriteIds: [],
+  },
+  {
+    number: 35,
+    slug: "communication-interne-lipton-fit",
+    title: "Communication interne",
+    company: "lipton-fit",
+    competences: ["communication-interne-cohesion-equipe", "redactionnel-editorial", "production-creative", "veille-et-analyse"],
     pitch:
-      "Premier poste : recréer de la cohésion entre des consultants toujours dispersés sur leurs missions, et refondre le site web du cabinet.",
-    corps: `**Contexte :** Mon premier poste, dans un cabinet de conseil en banque, assurance et finance d'une soixantaine de consultants, majoritairement de la communication interne, avec une part d'externe, et souvent en autonomie complète (ma responsable a été deux fois en congé maternité pendant ces quatre ans).
-
-**Ce que j'ai fait :** L'objectif principal de la mission : créer de la cohésion interne dans un cabinet où les consultants, toujours en mission chez leurs clients, finissaient parfois par mieux connaître leurs clients que leur propre cabinet. Concrètement :
-
-- **Refonte du site web du cabinet** : un chantier important, mené avec l'appui de quelques consultants techniques, dont j'ai piloté la conception et rédigé l'ensemble des contenus.
-- **Beaucoup de production de contenu** : rédaction de documents internes pour faire circuler l'information, conduite d'interviews de consultants, synthèses et rapports mettant en avant les bonnes pratiques du cabinet.
-- **Organisation d'événements de cohésion interne**, pour recréer du lien entre des consultants dispersés sur leurs missions.
-- **Quelques événements externes**, pour permettre aux clients de rencontrer les consultants du cabinet.
-- **Participation aux réunions du cabinet et rédaction des comptes rendus.**
-- **Relations presse** : quelques communiqués de presse.
-- Peu d'outils étaient en place à mon arrivée, alors j'ai aussi construit : refonte de la mascotte du cabinet et de l'identité visuelle des documents internes, création d'un format d'intégration pour les nouveaux arrivants (un portrait chinois), production et montage de vidéos d'interview.
-
-Je continue d'ailleurs à travailler ponctuellement pour LIPTON FIT aujourd'hui, leur carte de vœux annuelle, essentiellement (voir aussi la partie Créativité, section Design & illustration).`,
-    visuelsAPrevoir:
-      "Captures du site web refondu, exemple de document interne, mascotte, extrait d'une vidéo d'interview si disponible.",
+      "Créer de la cohésion dans un cabinet où les consultants, toujours en mission chez leurs clients, finissaient parfois par mieux connaître leurs clients que leur propre cabinet.",
+    corps: `**Ce que j'ai fait :** Rédaction de documents internes pour faire circuler l'information. Conduite d'interviews de consultants, synthèses et rapports mettant en avant les bonnes pratiques du cabinet. Rédaction des comptes rendus de réunions. Veille presse. Animation d'un forum interne. Organisation d'événements de cohésion interne, pour recréer du lien entre des consultants dispersés sur leurs missions. Refonte de la mascotte du cabinet et de l'identité visuelle des documents internes. Conception de plusieurs nouveaux formats de documents internes — peu d'outils étaient en place à mon arrivée —, dont un format d'intégration pour les nouveaux arrivants (un portrait chinois). Production et montage de vidéos d'interview.`,
+    visuelsAPrevoir: "Mascotte, extrait d'une vidéo d'interview si disponible, exemple de document interne.",
     pieceEcriteIds: ["lipton-fit-documents-internes"],
   },
 ];
@@ -755,11 +944,8 @@ export function pieceStatusLabel(piece: PieceEcrite): string {
 }
 
 // Compteurs réels de la taxonomie, calculés à partir de la ligne "Compétences :"
-// de chaque fiche (source la plus granulaire). ATTENTION : ces compteurs diffèrent
-// sur 4 points de la table résumé "Vue par compétence (index)" du document de
-// contenu, sur laquelle les compteurs affichés dans le wireframe v1 (validé le
-// 16/08/2026 : 4, 2, 4, 4, 2, 2, 4, 3, 2, 6, 6) avaient été calqués. Incohérence
-// signalée à Jérôme, pas corrigée d'autorité — voir le doc de plan technique.
+// de chaque fiche (source la plus granulaire, cf. lot 4 : incohérence trouvée et
+// corrigée entre le tableau résumé et les fiches elles-mêmes le 16/08/2026).
 export function competenceCounts(): Record<CompetenceSlug, number> {
   const counts = {} as Record<CompetenceSlug, number>;
   for (const c of COMPETENCES) {
