@@ -101,12 +101,9 @@ export const ACCROCHE_COMMUNICATION =
 // entreprise a changé. Textes de liaison (`contexte`) donc a priori toujours
 // valides tels quels.
 //
-// POINT À SIGNALER À JÉRÔME, PAS CORRIGÉ D'AUTORITÉ : le texte de liaison ANEM
-// ci-dessous (source : "4 - Communication - Draft narratif") dit "plus de 5 000
-// élus adhérents", alors que la fiche 17 de la base de données v2 (validée le
-// 17/08/2026) dit "plus de 6 000 élus adhérents". Les deux documents ne sont pas
-// synchronisés sur ce chiffre. Le chiffre le plus récent (6 000, doc v2) est
-// repris ci-dessous, mais cette divergence doit être confirmée par Jérôme.
+// Divergence "5 000" (draft narratif) vs "6 000" (base de données v2, fiche 17)
+// signalée le 18/08/2026 puis tranchée par Jérôme le jour même : 5 000 est le bon
+// chiffre, repris partout ci-dessous (COMPANIES, fiche 17, fiche 23).
 // ---------------------------------------------------------------------------
 
 export type CompanySlug =
@@ -170,7 +167,7 @@ export const COMPANIES: Company[] = [
     poste: "Responsable Communication et des Partenariats",
     posteDates: "2019-2022",
     contexte:
-      "L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 6 000 élus adhérents des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir.",
+      "L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 5 000 élus adhérents des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir.",
   },
   {
     slug: "yvelines",
@@ -659,7 +656,7 @@ export const PROJECTS: ProjectCard[] = [
     competences: ["evenementiel", "strategie-communication-institutionnelle"],
     pitch:
       "Piloter de bout en bout un congrès annuel de 500 élus de sensibilités politiques très différentes, avec la diplomatie que ça demande.",
-    corps: `**Contexte :** L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 6 000 élus adhérents des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir. Le congrès était ma première mission.
+    corps: `**Contexte :** L'Association Nationale des Élus de la Montagne (ANEM) regroupe plus de 5 000 élus adhérents des territoires de montagne. La communication avait été tenue par la même personne pendant plus de dix ans : stable, mais qui tournait en rond. On m'a confié la mission implicite de la faire repartir. Le congrès était ma première mission.
 
 **Ce que j'ai fait :** Congrès annuel (budget 200 K€, 500 élus toutes tendances politiques confondues, ministres, maires, députés, présidents de département) : pilotage de bout en bout, supports, protocole, supervision des prestataires.
 
@@ -733,7 +730,7 @@ Plus largement, coordonner un événement où se croisent 500 élus de sensibili
     title: "Gestion de la base de données de contacts",
     company: "anem",
     competences: ["structuration-outils"],
-    pitch: "Structurer et faire vivre la base de contacts d'une association de plus de 6 000 élus adhérents.",
+    pitch: "Structurer et faire vivre la base de contacts d'une association de plus de 5 000 élus adhérents.",
     corps: `**Ce que j'ai fait :** Gestion de la base de données de contacts : intégration des nouveaux contacts, structuration de la partie presse. Management d'apprentis et de stagiaires.`,
     visuelsAPrevoir: "Aucun spécifique.",
     pieceEcriteIds: [],
