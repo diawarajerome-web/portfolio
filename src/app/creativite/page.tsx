@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CREATIVITE_ACCROCHE, CREATIVITE_SECTIONS, CREATIVITE_VISUELS } from "@/data/creativite";
 import { renderCorps } from "@/lib/markdown";
 import styles from "@/styles/narrative.module.css";
@@ -27,6 +28,17 @@ export default function CreativitePage() {
           <div className={styles.body}>{renderCorps(section.body)}</div>
         </section>
       ))}
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionHeading}>Le jeu</h2>
+        <div className={styles.body}>
+          <p>
+            Pour tester l&apos;univers autrement que sur le papier, j&apos;ai construit un petit jeu de baston jouable
+            avec les personnages des Super-Humains.{" "}
+            <Link href="/creativite/jeu">Jouer à la démo</Link>
+          </p>
+        </div>
+      </section>
 
       <div className={styles.placeholder}>
         <p className={styles.placeholderTitle}>Visuels à prévoir</p>

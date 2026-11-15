@@ -1,0 +1,29 @@
+.frame {
+  width: 100%;
+  height: calc(100vh - 200px);
+  min-height: 420px;
+  max-height: 820px;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 10px;
+  background: #05060f;
+  display: block;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+
+.actions a {
+  text-decoration: underline;
+}
+
+.note {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.6;
+}
